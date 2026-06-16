@@ -1,61 +1,71 @@
 # my-home-library
 
-Personal home library API (FastAPI + PostgreSQL).
+Personal home library app (React + FastAPI + PostgreSQL).
 
-## Quick start (demo / new machine)
+## Quick start (new machine)
 
-**Prerequisites:** [Docker Desktop](https://www.docker.com/products/docker-desktop/), Python 3.13+
+**Prerequisite:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) (includes Docker Compose)
 
 ```bash
 git clone https://github.com/YOUR_USER/my-home-library.git
 cd my-home-library
-
-# 1. Start Postgres (creates home_library DB automatically)
-docker compose up -d
-
-# 2. Backend setup
-cd backend
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env               # defaults match docker-compose.yml
-python3 setup_db.py                # create tables
-uvicorn main:app --reload
+docker compose up --build
 ```
 
-**Try it:**
+Open **http://localhost:5173** in your browser — the home library UI.
 
-- Health: http://127.0.0.1:8000/health
-- Books: http://127.0.0.1:8000/books
-- API docs: http://127.0.0.1:8000/docs
+**Useful URLs:**
 
-**Optional demo data** (pgAdmin, psql, or Query Tool):
+- App: http://localhost:5173
+- API docs: http://localhost:8000/docs
+- Health check: http://localhost:8000/health
 
-```sql
-INSERT INTO books (title) VALUES ('The Hobbit');
-```
+The first start takes a few minutes (image pulls, `npm install`). Watch the terminal until the frontend shows `ready`.
 
-## Stop Postgres
+## Stop
 
 ```bash
 docker compose down
 ```
 
-Data is kept in a Docker volume. Run `docker compose down -v` to wipe it.
+Database data is kept in a Docker volume. Run `docker compose down -v` to wipe it (schema is recreated on next start).
 
-## Port conflict
+## Port conflicts
 
-If port 5432 is already in use (local Postgres/pgAdmin), stop that service first, or change the port in `docker-compose.yml` (e.g. `"5433:5432"`) and set `DB_PORT=5433` in `.env`.
+| Port | Service  | Fix |
+|------|----------|-----|
+| 8000 | API      | Change backend mapping in `docker-compose.yml` (e.g. `"8001:8000"`) |
+| 5173 | Frontend | Change frontend mapping (e.g. `"5174:5173"`) |
 
 ## Project layout
 
 ```
+frontend/              # React + Vite UI
 backend/
+  Dockerfile           # API container image
   main.py              # uvicorn entry point
-  setup_db.py          # apply db_setup.sql (tables)
+  db_setup.sql         # schema (applied on first Postgres start)
   app/
     routers/           # HTTP routes
     models/            # SQLAlchemy models
     schemas/           # Pydantic API shapes
     services/          # business logic
+docker-compose.yml     # db + backend + frontend
 ```
+
+## Optional: local Python dev (without Docker for the API)
+
+If you prefer running the API on the host while Postgres stays in Docker:
+
+```bash
+docker compose up -d db
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+python3 setup_db.py
+uvicorn main:app --reload
+```
+
+Use `DB_HOST=localhost` in `.env` (the default in `.env.example`).
