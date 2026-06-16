@@ -11,6 +11,7 @@ app = FastAPI(title="Home Library API")
 def root():
     return RedirectResponse(url="/docs")
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
