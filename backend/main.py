@@ -1,8 +1,3 @@
-from fastapi import FastAPI
+from app.main import app
 
-app = FastAPI(title="Home Library API")
-
-
-@app.get("/")
-def health():
-    return {"status": "ok"}
+__all__ = ["app"]
