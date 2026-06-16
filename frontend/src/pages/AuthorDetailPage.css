@@ -1,0 +1,15 @@
+.author-detail__back {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.author-detail__back:hover {
+  text-decoration: underline;
+}
+
+.author-detail__header p {
+  margin-bottom: 0;
+}

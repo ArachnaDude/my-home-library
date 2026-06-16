@@ -1,0 +1,26 @@
+:root {
+  --nav-rail-width: 5.5rem;
+  --color-primary: #2563eb;
+  --color-primary-subtle: #eff6ff;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f4f4f5;
+  --color-border: #e4e4e7;
+  --color-text: #1a1a1a;
+  --color-text-muted: #71717a;
+  --color-danger: #b91c1c;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  color: var(--color-text);
+  background: #f4f4f5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}

@@ -1,0 +1,91 @@
+@import "./page.css";
+
+.books-page__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.books-page__header p {
+  margin-bottom: 0;
+}
+
+.books-page__add {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: white;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.books-page__add:hover {
+  filter: brightness(1.05);
+}
+
+.books-search {
+  margin: 1.5rem 0 1rem;
+}
+
+.books-search__input {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  font-size: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.books-search__input:focus {
+  outline: 2px solid var(--color-primary-subtle);
+  border-color: var(--color-primary);
+}
+
+.books-results__hint {
+  margin-top: 0.5rem;
+}
+
+.books-results__count {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.books-results__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.books-results__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--color-border);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.1s;
+}
+
+.books-results__item:hover {
+  background: var(--color-surface-hover);
+  margin: 0 -0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-radius: var(--radius-md);
+}
+
+.books-results__title {
+  font-weight: 500;
+}
+
+.books-results__subtitle {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
