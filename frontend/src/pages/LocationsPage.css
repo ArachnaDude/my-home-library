@@ -1,0 +1,32 @@
+.add-form--stacked {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.locations-list h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.75rem;
+}
+
+.locations-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.locations-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.locations-list__name {
+  font-weight: 500;
+}
+
+.locations-list__desc {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}

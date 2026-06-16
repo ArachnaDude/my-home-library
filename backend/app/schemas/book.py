@@ -12,6 +12,17 @@ class BookCreate(BaseModel):
     format: str | None = None
     notes: str | None = None
     location_id: uuid.UUID | None = None
+    author_id: uuid.UUID | None = None
+
+
+class BookUpdate(BaseModel):
+    title: str
+    subtitle: str | None = None
+    isbn: str | None = None
+    publication_year: int | None = None
+    format: str | None = None
+    notes: str | None = None
+    location_id: uuid.UUID | None = None
 
 
 class Book(BaseModel):
@@ -25,3 +36,19 @@ class Book(BaseModel):
     location_id: uuid.UUID | None
     created_at: datetime
     updated_at: datetime
+
+
+class AuthorSummary(BaseModel):
+    id: uuid.UUID
+    display_name: str
+
+
+class LocationSummary(BaseModel):
+    id: uuid.UUID
+    name: str
+    description: str | None
+
+
+class BookDetail(Book):
+    authors: list[AuthorSummary] = []
+    location: LocationSummary | None = None
