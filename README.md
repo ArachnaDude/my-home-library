@@ -7,7 +7,7 @@ Personal home library app (React + FastAPI + PostgreSQL).
 **Prerequisite:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) (includes Docker Compose)
 
 ```bash
-git clone https://github.com/YOUR_USER/my-home-library.git
+git clone https://github.com/ArachnaDude/my-home-library.git
 cd my-home-library
 docker compose up --build
 ```
