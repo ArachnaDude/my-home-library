@@ -6,6 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.models.book import Book as BookModel
+from app.models.location import Location as LocationModel
 from app.schemas.book import Book, BookCreate
 
 
@@ -24,19 +25,38 @@ def _to_book(row: BookModel) -> Book:
     )
 
 
-def list_books(db: Session) -> list[Book]:
-    rows = db.scalars(select(BookModel).order_by(BookModel.title)).all()
+def _escape_ilike(value: str) -> str:
+    return value.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+
+
+def _raise_create_book_error(exc: IntegrityError) -> None:
+    pgcode = getattr(exc.orig, "pgcode", None)
+    if pgcode == "23505":
+        raise HTTPException(status_code=409, detail="ISBN already exists") from exc
+    if pgcode == "23503":
+        raise HTTPException(status_code=404, detail="Location not found") from exc
+    raise HTTPException(status_code=400, detail="Could not create book") from exc
+
+
+def list_books(db: Session, title: str | None = None) -> list[Book]:
+    stmt = select(BookModel).order_by(BookModel.title)
+    if title and title.strip():
+        pattern = f"%{_escape_ilike(title.strip())}%"
+        stmt = stmt.where(BookModel.title.ilike(pattern, escape="\\"))
+    rows = db.scalars(stmt).all()
     return [_to_book(row) for row in rows]
 
 
 def create_book(db: Session, data: BookCreate) -> Book:
+    if data.location_id is not None and db.get(LocationModel, data.location_id) is None:
+        raise HTTPException(status_code=404, detail="Location not found")
     book = BookModel(**data.model_dump())
     db.add(book)
     try:
         db.commit()
     except IntegrityError as exc:
         db.rollback()
-        raise HTTPException(status_code=409, detail="ISBN already exists") from exc
+        _raise_create_book_error(exc)
     db.refresh(book)
     return _to_book(book)
 

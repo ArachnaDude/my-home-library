@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.author import Author as AuthorModel
@@ -11,6 +12,11 @@ def _to_author(row: AuthorModel) -> Author:
         first_name=row.first_name,
         last_name=row.last_name,
     )
+
+
+def list_authors(db: Session) -> list[Author]:
+    rows = db.scalars(select(AuthorModel).order_by(AuthorModel.display_name)).all()
+    return [_to_author(row) for row in rows]
 
 
 def create_author(db: Session, data: AuthorCreate) -> Author:

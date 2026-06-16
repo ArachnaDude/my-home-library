@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.location import Location as LocationModel
@@ -11,6 +12,11 @@ def _to_location(row: LocationModel) -> Location:
         description=row.description,
         parent_id=row.parent_id,
     )
+
+
+def list_locations(db: Session) -> list[Location]:
+    rows = db.scalars(select(LocationModel).order_by(LocationModel.name)).all()
+    return [_to_location(row) for row in rows]
 
 
 def create_location(db: Session, data: LocationCreate) -> Location:

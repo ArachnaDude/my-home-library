@@ -11,8 +11,8 @@ router = APIRouter(prefix="/books", tags=["books"])
 
 
 @router.get("", response_model=list[Book])
-def get_books(db: Session = Depends(get_db)):
-    return book_service.list_books(db)
+def get_books(title: str | None = None, db: Session = Depends(get_db)):
+    return book_service.list_books(db, title=title)
 
 
 @router.post("/create", response_model=Book, status_code=status.HTTP_201_CREATED)
